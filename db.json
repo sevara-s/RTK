@@ -1,13 +1,8 @@
 {
   "todos": [
     {
-      "id": "1",
-      "title": "Learn Redux Toolkit",
-      "completed": false
-    },
-    {
       "id": "2",
-      "title": "Convert project to RTK Query",
+      "title": "query1",
       "completed": false
     },
     {

@@ -1,12 +1,12 @@
 import { Progress } from "antd";
-import { useGetTodosQuery } from "../../redux/todo /todo";
+import { useGetTodosQuery } from "../../redux/todo /todo";  
 
 const ProgressBar = () => {
   const { data: tasks = [], isLoading } = useGetTodosQuery();
 
   if (isLoading) return <p>Loading progress...</p>;
 
-  const completed = tasks.filter((task) => task.status === "done").length;
+  const completed = tasks.filter((task) => task.completed).length;
   const percent = tasks.length > 0 ? Math.round((completed / tasks.length) * 100) : 0;
 
   return (

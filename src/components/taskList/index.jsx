@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Button, Input } from "antd";
-// import { useGetTodosQuery, useDeleteTodoMutation, useToggleTodoMutation } from "../../redux/todo/todo";
-import { useGetTodosQuery,useAddTodoMutation,useDeleteTodoMutation,useToggleTodoMutation } from "../../redux/todo /todo";
+import { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation, useToggleTodoMutation } from "../../redux/todo /todo";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Edit from "../edit";
 
 const TaskList = () => {
-  const { data: todos = [], isLoading, isError } = useGetTodosQuery();
+  const { data: todos = [], isLoading, isError, refetch } = useGetTodosQuery();
   const [deleteTodo] = useDeleteTodoMutation();
   const [toggleTodo] = useToggleTodoMutation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +18,16 @@ const TaskList = () => {
   const filteredTasks = todos.filter((task) =>
     task.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+ 
+  const handleDelete = async (id) => {
+    try {
+      await deleteTodo(id);  
+      refetch(); 
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
 
   return (
     <div className="mt-4">
@@ -54,16 +63,16 @@ const TaskList = () => {
             <Button icon={<EditOutlined className="!text-[#9d6b53]" />} onClick={() => setEdited(task)} />
             <Button
               icon={<DeleteOutlined className="!text-[#9d6b53]" />}
-              onClick={() => deleteTodo({ id: task.id })}
+              onClick={() => handleDelete(task.id)}
             />
           </div>
         </div>
       ))}
 
-    
       {edited && <Edit task={edited} close={() => setEdited(null)} />}
     </div>
   );
 };
 
 export default TaskList;
+
